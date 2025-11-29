@@ -1,6 +1,6 @@
 import argparse
 
-from workflow_core.workflows.hello_world_workflow import HelloWorldWorkflow
+from android_workflow_core.workflows.hello_world_workflow import HelloWorldWorkflow
 
 
 def _build_parser() -> argparse.ArgumentParser:

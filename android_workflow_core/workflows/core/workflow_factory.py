@@ -35,7 +35,7 @@ class WorkflowFactory:
     def _discover_workflow_classes() -> set[Type[WorkflowInterface]]:
         classes: set[Type[WorkflowInterface]] = set()
 
-        # Discover built-in workflows under workflow_core
+        # Discover built-in workflows under android_workflow_core
         package_name = __package__ or __name__
         parent_package = package_name.rsplit(".", 1)[0] if "." in package_name else package_name
         package_prefix = f"{parent_package}."
