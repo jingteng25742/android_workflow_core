@@ -11,23 +11,21 @@ import sys
 from types import ModuleType
 from typing import Type
 
-from . import workflows as workflows_pkg
+from . import __path__ as package_path
 from .messaging.messaging import CONFIG_ENV_VAR
-from .workflows.core.workflow import Workflow
-from .workflows.core.workflow_config import WorkflowConfig
-from .workflows.core.workflow_interface import WorkflowInterface
+from .core.workflow import Workflow
+from .core.workflow_config import WorkflowConfig
+from .core.workflow_interface import WorkflowInterface
 
 
 def _discover_workflow_classes() -> set[Type[WorkflowInterface]]:
     """Find concrete workflow classes that implement register_cli_arguments."""
     classes: set[Type[WorkflowInterface]] = set()
-    for _, module_name, is_pkg in pkgutil.iter_modules(
-        workflows_pkg.__path__, workflows_pkg.__name__ + "."
-    ):
-        if is_pkg:
-            continue
-        module = importlib.import_module(module_name)
-        classes.update(_collect_workflow_classes(module))
+    package_prefix = f"{__package__}."
+    for _, module_name, is_pkg in pkgutil.walk_packages(package_path, package_prefix):
+        if not is_pkg:
+            module = importlib.import_module(module_name)
+            classes.update(_collect_workflow_classes(module))
     return classes
 
 

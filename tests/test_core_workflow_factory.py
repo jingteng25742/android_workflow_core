@@ -1,7 +1,7 @@
 from workflow_core.workflows.hello_world_workflow import HelloWorldWorkflow
-from workflow_core.workflows.core.workflow_factory import WorkflowFactory
-from workflow_core.workflows.core.workflow_types import WorkflowActionName
-from workflow_core.workflows.core.workflow_config import WorkflowConfig
+from workflow_core.core.workflow_factory import WorkflowFactory
+from workflow_core.core.workflow_types import WorkflowActionName
+from workflow_core.core.workflow_config import WorkflowConfig
 
 
 def test_get_returns_registered_workflow_class():

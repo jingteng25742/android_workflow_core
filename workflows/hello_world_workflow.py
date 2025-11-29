@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import argparse
 
-from .core.workflow_config import WorkflowConfig
-from .core.workflow_interface import WorkflowInterface
-from .core.workflow_types import (
+from ..core.workflow_config import WorkflowConfig
+from ..core.workflow_interface import WorkflowInterface
+from ..core.workflow_types import (
     WorkflowActionHandler,
     WorkflowActionName,
     WorkflowActionResult,

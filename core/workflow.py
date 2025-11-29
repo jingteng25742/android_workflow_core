@@ -8,7 +8,7 @@ import random
 
 import uiautomator2 as u2
 
-from ...messaging.messaging import send
+from ..messaging.messaging import send
 from .workflow_config import WorkflowConfig
 from .workflow_factory import WorkflowFactory
 from .workflow_types import WorkflowActionName, WorkflowActionResult, WorkflowName

@@ -39,19 +39,18 @@ class WorkflowFactory:
         package_name = __package__ or __name__
         parent_package = package_name.rsplit(".", 1)[0] if "." in package_name else package_name
         package_prefix = f"{parent_package}."
-        for _, module_name, is_pkg in pkgutil.iter_modules(
+        for _, module_name, is_pkg in pkgutil.walk_packages(
             workflows_path, prefix=package_prefix
         ):
-            if is_pkg:
-                continue
-            module = importlib.import_module(module_name)
-            for value in vars(module).values():
-                if (
-                    inspect.isclass(value)
-                    and value is not WorkflowInterface
-                    and issubclass(value, WorkflowInterface)
-                ):
-                    classes.add(value)
+            if not is_pkg:
+                module = importlib.import_module(module_name)
+                for value in vars(module).values():
+                    if (
+                        inspect.isclass(value)
+                        and value is not WorkflowInterface
+                        and issubclass(value, WorkflowInterface)
+                    ):
+                        classes.add(value)
 
         # Optionally discover workflows from extra packages (comma-separated)
         extra_packages = os.getenv("WORKFLOW_EXTRA_PACKAGES", "workflows")
@@ -63,17 +62,18 @@ class WorkflowFactory:
             pkg_path = getattr(pkg, "__path__", None)
             if not pkg_path:
                 continue
-            for _, module_name, is_pkg in pkgutil.iter_modules(pkg_path, prefix=f"{pkg_name}."):
-                if is_pkg:
-                    continue
-                module = importlib.import_module(module_name)
-                for value in vars(module).values():
-                    if (
-                        inspect.isclass(value)
-                        and value is not WorkflowInterface
-                        and issubclass(value, WorkflowInterface)
-                    ):
-                        classes.add(value)
+            for _, module_name, is_pkg in pkgutil.walk_packages(
+                pkg_path, prefix=f"{pkg_name}."
+            ):
+                if not is_pkg:
+                    module = importlib.import_module(module_name)
+                    for value in vars(module).values():
+                        if (
+                            inspect.isclass(value)
+                            and value is not WorkflowInterface
+                            and issubclass(value, WorkflowInterface)
+                        ):
+                            classes.add(value)
 
         return classes
 

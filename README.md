@@ -1,4 +1,4 @@
-# workflow_core
+# Android UI Workflow Core
 
 Shared core for Android UI automation workflows. Provides:
 - Workflow protocol, configuration, and discovery utilities.
