@@ -12,7 +12,6 @@ from types import ModuleType
 from typing import Type
 
 from . import __path__ as package_path
-from .messaging.messaging import CONFIG_ENV_VAR
 from .core.workflow import Workflow
 from .core.workflow_config import WorkflowConfig
 from .core.workflow_interface import WorkflowInterface
@@ -54,12 +53,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Workflow to launch (no default to encourage explicit selection).",
     )
     parser.add_argument(
-        "--action",
-        "--act",
-        default="login",
-        help="Workflow action to execute (default: login).",
-    )
-    parser.add_argument(
         "--device-id",
         default=os.getenv("ANDROID_DEVICE_ID"),
         help="Optional adb device serial; defaults to ANDROID_DEVICE_ID env var.",
@@ -70,12 +63,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Disable any configured workflow delays.",
     )
-    parser.add_argument(
-        "--messaging-config",
-        "--msg",
-        default=None,
-        help="Optional path to messaging.json; sets MESSAGING_CONFIG_PATH for Twilio sends.",
-    )
     for workflow_cls in sorted(_discover_workflow_classes(), key=lambda cls: cls.__name__):
         workflow_cls.register_cli_arguments(parser)
     return parser.parse_args(argv)
@@ -83,9 +70,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-
-    if args.messaging_config:
-        os.environ[CONFIG_ENV_VAR] = args.messaging_config
 
     config = WorkflowConfig(
         workflow=args.workflow,

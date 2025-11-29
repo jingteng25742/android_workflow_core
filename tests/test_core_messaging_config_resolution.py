@@ -1,26 +1,26 @@
-import os
 from pathlib import Path
 
-from workflow_core.messaging.messaging import CONFIG_ENV_VAR, resolve_config_path
+from workflow_core.messaging.messaging import load_config
 
 
-def test_resolve_config_path_prefers_argument(tmp_path):
-    explicit = tmp_path / "custom.json"
-    resolved = resolve_config_path(explicit)
-    assert resolved == explicit
-
-
-def test_resolve_config_path_uses_env(monkeypatch, tmp_path):
-    env_path = tmp_path / "env.json"
-    monkeypatch.setenv(CONFIG_ENV_VAR, str(env_path))
-
-    resolved = resolve_config_path()
-    assert resolved == env_path
-
-
-def test_resolve_config_path_defaults_to_config_dir(tmp_path, monkeypatch):
-    # Simulate cwd by switching into a temp dir
+def test_load_config_uses_default_path(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    expected = Path.cwd() / "config" / "messaging.json"
-    resolved = resolve_config_path()
-    assert resolved == expected
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    config_file = config_dir / "messaging.json"
+    config_file.write_text(
+        """{
+            "account_sid": "sid",
+            "auth_token": "token",
+            "from": "+123",
+            "to": "+456"
+        }""",
+        encoding="utf-8",
+    )
+
+    loaded = load_config()
+
+    assert loaded["account_sid"] == "sid"
+    assert loaded["auth_token"] == "token"
+    assert loaded["from"] == "+123"
+    assert loaded["to"] == "+456"
