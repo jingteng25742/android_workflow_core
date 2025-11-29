@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from android_workflow_core.messaging.messaging import CONFIG_ENV_VAR, resolve_config_path
+from workflow_core.messaging.messaging import CONFIG_ENV_VAR, resolve_config_path
 
 
 def test_resolve_config_path_prefers_argument(tmp_path):

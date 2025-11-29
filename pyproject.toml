@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "android_workflow_core"
+name = "workflow_core"
 version = "0.1.0"
 description = "Shared Android UI automation core (workflow orchestration, messaging, CLI)."
 readme = "README.md"

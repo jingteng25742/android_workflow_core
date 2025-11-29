@@ -1,4 +1,4 @@
-from android_workflow_core import cli
+from workflow_core import cli
 
 
 def test_no_delay_flag_and_action_present():
