@@ -25,7 +25,7 @@ class Workflow:
         print("Device connection established.")
 
     @staticmethod 
-    def _random_delay(max_minutes):
+    def _random_delay():
         """
         Decorator that delays the execution of a function by a random number
         of minutes between 1 minute and max_minutes (inclusive).
@@ -33,18 +33,20 @@ class Workflow:
         def decorator(func):
             @wraps(func)
             def wrapper(self, *args, **kwargs):
-                if getattr(self.config, "no_delay", False):
-                    print(f"Delay bypassed for '{func.__name__}' (no-delay mode).")
-                    return func(self, *args, **kwargs)
-                delay_minutes = random.randint(1, max_minutes)
-                delay_seconds = delay_minutes * 60
-                print(f"Delaying '{func.__name__}' for {delay_minutes} minute(s)...")
-                time.sleep(delay_seconds)
+                delay_minutes_max = getattr(self.config, "delay_minutes", 0)
+                if delay_minutes_max == 0:
+                    print(f"Delay bypassed for '{func.__name__}'")
+                else:
+                    delay_minutes = random.randint(1, delay_minutes_max)
+                    print(f"Delaying '{func.__name__}' for {delay_minutes} minute(s)...")
+                    delay_seconds = delay_minutes * 60
+                    time.sleep(delay_seconds)
+                
                 return func(self, *args, **kwargs)
             return wrapper
         return decorator
 
-    @_random_delay(15)
+    @_random_delay()
     def run(self) -> WorkflowActionResult:
         """Entry point for the workflow."""
         workflow_name = self.config.workflow_name

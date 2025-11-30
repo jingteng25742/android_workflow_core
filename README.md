@@ -9,6 +9,6 @@ Shared core for Android UI automation workflows. Provides:
 Usage (local editable install example):
 1. `pip install -e ./workflow_core`
 2. Implement a workflow class under your app repo that subclasses `WorkflowInterface` and exposes `register_cli_arguments`.
-3. Run via `python -m workflow_core.cli --workflow your.workflow --action start --device-id <serial>`.
+3. Run via `python -m workflow_core.core.workflow_cli_parser --workflow your.workflow --action start --device-id <serial>`.
 
 Messaging config defaults to `config/messaging.json` relative to the working directory.

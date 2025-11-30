@@ -9,7 +9,7 @@ def test_get_returns_registered_workflow_class():
         workflow="workflow.hello.world",
         action=WorkflowActionName("login"),
         device_id=None,
-        no_delay=False,
+        delay_minutes=0,
     )
     workflow_cls = WorkflowFactory.get_workflow(config)
     assert isinstance(workflow_cls, HelloWorldWorkflow)
@@ -20,7 +20,7 @@ def test_get_raises_for_unknown_workflow():
         workflow="workflow.does.not.exist",
         action=WorkflowActionName("login"),
         device_id=None,
-        no_delay=False,
+        delay_minutes=0,
     )
     try:
         WorkflowFactory.get_workflow(config)

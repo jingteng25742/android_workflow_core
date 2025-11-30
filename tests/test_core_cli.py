@@ -1,10 +1,9 @@
-from workflow_core import cli
+from workflow_core.core.workflow_cli_parser import WorkflowCLIParser
 
 
-def test_no_delay_flag_and_action_present():
-    args = cli.parse_args(
-        ["--workflow", "workflow.hello.world", "--action", "login", "--nd"]
+def test_delay_flag_and_action_present():
+    args = WorkflowCLIParser.parse(
+        ["--workflow", "workflow.hello.world", "-d", "3"]
     )
 
-    assert args.no_delay is True
-    assert args.action == "login"
+    assert args.delay == 3

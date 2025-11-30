@@ -10,6 +10,7 @@ from .workflow_types import (
     WorkflowActionResult,
     WorkflowName,
 )
+from .workflow_cli_parser import WorkflowCLIParser
 
 __all__ = [
     "Workflow",
@@ -20,4 +21,5 @@ __all__ = [
     "WorkflowActionName",
     "WorkflowActionResult",
     "WorkflowName",
+    "WorkflowCLIParser",
 ]

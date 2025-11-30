@@ -1,6 +1,6 @@
 """workflow_core: shared UI automation primitives and CLI."""
 
-from . import cli, messaging
+from . import messaging
 from .core import (
     Workflow,
     WorkflowConfig,
@@ -10,11 +10,11 @@ from .core import (
     WorkflowActionName,
     WorkflowActionResult,
     WorkflowName,
+    WorkflowCLIParser,
 )
 from .workflows import HelloWorldWorkflow
 
 __all__ = [
-    "cli",
     "messaging",
     "HelloWorldWorkflow",
     "Workflow",
@@ -25,4 +25,5 @@ __all__ = [
     "WorkflowActionName",
     "WorkflowActionResult",
     "WorkflowName",
+    "WorkflowCLIParser",
 ]

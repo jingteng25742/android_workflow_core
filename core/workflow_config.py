@@ -15,7 +15,7 @@ class WorkflowConfig:
     workflow_name: WorkflowName
     action_name: WorkflowActionName
     device_id: Optional[str] = None
-    no_delay: bool = False
+    delay_minutes: int = 0
     device: Optional[u2.Device] = None
 
     def __init__(
@@ -23,11 +23,11 @@ class WorkflowConfig:
         workflow: WorkflowName,
         action: WorkflowActionName,
         device_id: Optional[str] = None,
-        no_delay: bool = False,
+        delay_minutes: int = 0,
     ) -> None:
         self.workflow_name = workflow
         self.action_name = action
         self.device_id = device_id
-        self.no_delay = no_delay
+        self.delay_minutes = delay_minutes
         self.device = None
         
