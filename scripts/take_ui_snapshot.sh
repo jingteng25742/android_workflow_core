@@ -22,7 +22,7 @@ FILE_NAME_IMG="$1.png"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Define local output directory inside /scripts
-OUTPUT_DIR="$SCRIPT_DIR/../ui_snapshots"
+OUTPUT_DIR="$SCRIPT_DIR/../../ui_snapshots"
 
 # Create output directory if not exists
 mkdir -p "$OUTPUT_DIR"
