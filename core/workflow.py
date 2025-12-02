@@ -7,6 +7,7 @@ from functools import wraps
 import random
 
 import uiautomator2 as u2
+import adbutils
 
 from ..messaging.messaging import send
 from .workflow_config import WorkflowConfig
@@ -17,12 +18,12 @@ class Workflow:
 
     def __init__(self, config: WorkflowConfig) -> None:
         self.config: WorkflowConfig = config
+        device_id = config.device_id or self._get_first_connected_device_id()
         if config.device_id:
-            self.device = u2.connect(config.device_id)
-        else:
-            self.device = u2.connect()
+            print(f"Connecting to explicitly provided device '{device_id}'.")
+        self.device = u2.connect(device_id)
         self.config.device = self.device
-        print("Device connection established.")
+        print(f"Device connection established for '{device_id}'.")
 
     @staticmethod 
     def _random_delay():
@@ -73,6 +74,17 @@ class Workflow:
             success=success,
             error=error,
         ) 
+
+    def _get_first_connected_device_id(self) -> str:
+        """Return the first connected adb device serial or raise if none."""
+        devices = adbutils.adb.device_list()
+        if not devices:
+            raise RuntimeError("No connected Android devices found.")
+        if len(devices) > 1:
+            print(
+                f"Multiple devices detected; defaulting to first device '{devices[0].serial}'."
+            )
+        return devices[0].serial
         
     def _wake_device(self) -> None:
         """Turn on the screen and unlock the device if needed."""
