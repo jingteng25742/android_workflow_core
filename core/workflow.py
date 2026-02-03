@@ -66,7 +66,7 @@ class Workflow:
             error = exc
             print (f"Workflow '{workflow_name}:{action_name}' failed with exception: {exc!r}")
             
-        send(success, f"{workflow_name}:{action_name} {success}", error)
+        send(success, f"{workflow_name}:{action_name}", error)
         
         return WorkflowActionResult(
             workflow_name=workflow_name,
