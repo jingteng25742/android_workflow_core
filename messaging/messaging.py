@@ -9,8 +9,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from twilio.rest import Client
-
 
 DEFAULT_CONFIG_RELATIVE = Path("config") / "messaging.json"
 
@@ -39,6 +37,13 @@ def send(
     e: Optional[Exception] = None,
 ) -> None:
     """Compose and send a Twilio message using the default config."""
+    try:
+        from twilio.rest import Client
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "twilio is required to send messages. Install it with `pip install twilio`."
+        ) from exc
+
     text = "✅ " if success else "❌ "
     text += message
 
