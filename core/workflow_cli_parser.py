@@ -18,6 +18,13 @@ from .workflow_interface import WorkflowInterface
 class WorkflowCLIParser:
     """Argument parser helper for workflow CLI."""
 
+    @staticmethod
+    def _non_negative_int(value: str) -> int:
+        parsed = int(value)
+        if parsed < 0:
+            raise argparse.ArgumentTypeError("delay must be >= 0")
+        return parsed
+
     @classmethod
     def parse(
         cls,
@@ -41,7 +48,7 @@ class WorkflowCLIParser:
         parser.add_argument(
             "--delay",
             "-d",
-            type=int,
+            type=cls._non_negative_int,
             default=0,
             help="Override delay in minutes between workflow runs (0 to bypass delays).",
         )

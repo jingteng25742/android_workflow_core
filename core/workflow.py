@@ -35,7 +35,7 @@ class Workflow:
             @wraps(func)
             def wrapper(self, *args, **kwargs):
                 delay_minutes_max = getattr(self.config, "delay_minutes", 0)
-                if delay_minutes_max == 0:
+                if delay_minutes_max <= 0:
                     print(f"Delay bypassed for '{func.__name__}'")
                 else:
                     delay_minutes = random.randint(1, delay_minutes_max)
@@ -55,11 +55,9 @@ class Workflow:
         success = False
         error = None
 
-        self._wake_device()
-        print(f"Executing '{workflow_name}:{action_name}'.")
-        
-        """Execute workflow-specific automation steps."""
         try:
+            self._wake_device()
+            print(f"Executing '{workflow_name}:{action_name}'.")
             workflow = WorkflowFactory.get_workflow(self.config)
             success = workflow.run(self.config.action_name)
         except Exception as exc:
