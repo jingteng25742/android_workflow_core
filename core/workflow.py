@@ -103,7 +103,9 @@ class Workflow:
 
     def _return_to_home(self) -> None:
         """Bring the device back to a neutral state."""
-        print(f"Stopping package '{self.config.workflow_name}' and returning to home screen.")
-        self.device.app_stop(self.config.workflow_name)
+        workflow = WorkflowFactory.get_workflow(self.config)
+        package_name = workflow.package_name()
+        print(f"Stopping package '{package_name}' and returning to home screen.")
+        self.device.app_stop(package_name)
         self.device.press("home")
     
