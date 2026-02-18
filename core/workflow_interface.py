@@ -4,7 +4,7 @@ import argparse
 from typing import Protocol, runtime_checkable
 
 from .workflow_config import WorkflowConfig
-from .workflow_types import WorkflowActionHandler, WorkflowActionName, WorkflowActionResult, WorkflowName
+from .workflow_types import WorkflowActionHandler, WorkflowActionName, WorkflowName
 
 
 @runtime_checkable
@@ -22,7 +22,6 @@ class WorkflowInterface(Protocol):
     def actions(self) -> dict[WorkflowActionName, WorkflowActionHandler]: ...
     
     def run(self, action: WorkflowActionName) -> bool: ...
-    
+
     @staticmethod
     def register_cli_arguments(parser: argparse.ArgumentParser) -> None: ...
-    

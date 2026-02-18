@@ -86,11 +86,26 @@ class WorkflowFactory:
             )
 
         try:
-            result = name_attr()
-        except TypeError:
-            # Instance method; bypass __init__ to avoid side effects.
-            instance = workflow_cls.__new__(workflow_cls)  # type: ignore[misc]
-            result = name_attr(instance)
+            signature = inspect.signature(name_attr)
+            positional_params = [
+                param
+                for param in signature.parameters.values()
+                if param.kind in (
+                    inspect.Parameter.POSITIONAL_ONLY,
+                    inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                )
+            ]
+
+            if len(positional_params) == 0:
+                result = name_attr()
+            elif len(positional_params) == 1:
+                # Instance method; bypass __init__ to avoid side effects.
+                instance = workflow_cls.__new__(workflow_cls)  # type: ignore[misc]
+                result = name_attr(instance)
+            else:
+                raise ValueError(
+                    f"workflow_name() on '{workflow_cls.__name__}' must accept only 'self'."
+                )
         except Exception as exc:  # pragma: no cover - defensive guardrail
             raise ValueError(
                 f"Failed to resolve workflow name for '{workflow_cls.__name__}'"

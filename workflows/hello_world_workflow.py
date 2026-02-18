@@ -42,6 +42,9 @@ class HelloWorldWorkflow(WorkflowInterface):
     def action_handler(self, action: WorkflowActionName) -> WorkflowActionHandler:
         return self._actions[action]
 
+    def actions(self) -> dict[WorkflowActionName, WorkflowActionHandler]:
+        return self._actions
+
     def run(self, action: WorkflowActionName) -> bool:
         handler = self.action_handler(action)
         return handler()
