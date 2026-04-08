@@ -27,16 +27,26 @@ OUTPUT_DIR="$SCRIPT_DIR/../../ui_snapshots"
 # Create output directory if not exists
 mkdir -p "$OUTPUT_DIR"
 
+# Select the first connected ADB device in "device" state.
+DEVICE_SERIAL="$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')"
+
+if [ -z "$DEVICE_SERIAL" ]; then
+  echo "❌ Error: No connected ADB devices found."
+  exit 1
+fi
+
+echo "📱 Using ADB device: $DEVICE_SERIAL"
+
 echo "📱 Dumping UI hierarchy from device..."
-adb shell uiautomator dump "/sdcard/$FILE_NAME_XML"
+adb -s "$DEVICE_SERIAL" shell uiautomator dump "/sdcard/$FILE_NAME_XML"
 
 echo "⬇️ Pulling dump file to $FILE_NAME_XML"
-adb pull "/sdcard/$FILE_NAME_XML" "$OUTPUT_DIR/"
+adb -s "$DEVICE_SERIAL" pull "/sdcard/$FILE_NAME_XML" "$OUTPUT_DIR/"
 
 echo "📸 Capturing device screenshot..."
-adb shell screencap -p "/sdcard/$FILE_NAME_IMG"
+adb -s "$DEVICE_SERIAL" shell screencap -p "/sdcard/$FILE_NAME_IMG"
 
 echo "⬇️ Pulling screenshot to $FILE_NAME_IMG"
-adb pull "/sdcard/$FILE_NAME_IMG" "$OUTPUT_DIR/"
+adb -s "$DEVICE_SERIAL" pull "/sdcard/$FILE_NAME_IMG" "$OUTPUT_DIR/"
 
 echo "✅ Files saved to $OUTPUT_DIR/"
